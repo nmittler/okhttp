@@ -97,7 +97,7 @@ public final class ResponseCacheTest {
 
   @Before public void setUp() throws Exception {
     server =  new MockWebServer();
-    server.setNpnEnabled(false);
+    server.setAlpnEnabled(false);
     server2 =  new MockWebServer();
 
     client = new OkHttpClient();

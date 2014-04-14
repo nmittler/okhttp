@@ -109,8 +109,8 @@ public final class MockWebServer {
   private Dispatcher dispatcher = new QueueDispatcher();
 
   private int port = -1;
-  private boolean npnEnabled = true;
-  private List<Protocol> npnProtocols = Protocol.HTTP2_SPDY3_AND_HTTP;
+  private boolean alpnEnabled = true;
+  private List<Protocol> alpnProtocols = Protocol.HTTP2_SPDY3_AND_HTTP;
 
   public int getPort() {
     if (port == -1) throw new IllegalStateException("Cannot retrieve port before calling play()");
@@ -162,22 +162,22 @@ public final class MockWebServer {
   }
 
   /**
-   * Sets whether NPN is used on incoming HTTPS connections to negotiate a
-   * protocol like HTTP/1.1 or SPDY/3. Call this method to disable NPN and
+   * Sets whether ALPN is used on incoming HTTPS connections to negotiate a
+   * protocol like HTTP/1.1 or SPDY/3. Call this method to disable ALPN and
    * SPDY.
    */
-  public void setNpnEnabled(boolean npnEnabled) {
-    this.npnEnabled = npnEnabled;
+  public void setAlpnEnabled(boolean alpnEnabled) {
+    this.alpnEnabled = alpnEnabled;
   }
 
   /**
-   * Indicates the protocols supported by NPN on incoming HTTPS connections.
-   * This list is ignored when npn is disabled.
+   * Indicates the protocols supported by ALPN on incoming HTTPS connections.
+   * This list is ignored when alpn is disabled.
    *
    * @param protocols the protocols to use, in order of preference. The list
    *     must contain "http/1.1". It must not contain null.
    */
-  public void setNpnProtocols(List<Protocol> protocols) {
+  public void setAlpnProtocols(List<Protocol> protocols) {
     protocols = Util.immutableList(protocols);
     if (!protocols.contains(Protocol.HTTP_11)) {
       throw new IllegalArgumentException("protocols doesn't contain http/1.1: " + protocols);
@@ -185,7 +185,7 @@ public final class MockWebServer {
     if (protocols.contains(null)) {
       throw new IllegalArgumentException("protocols must not contain null");
     }
-    this.npnProtocols = Util.immutableList(protocols);
+    this.alpnProtocols = Util.immutableList(protocols);
   }
 
   /**
@@ -326,14 +326,14 @@ public final class MockWebServer {
           sslSocket.setUseClientMode(false);
           openClientSockets.put(socket, true);
 
-          if (npnEnabled) {
-            Platform.get().setNpnProtocols(sslSocket, npnProtocols);
+          if (alpnEnabled) {
+            Platform.get().setAlpnProtocols(sslSocket, alpnProtocols);
           }
 
           sslSocket.startHandshake();
 
-          if (npnEnabled) {
-            ByteString selectedProtocol = Platform.get().getNpnSelectedProtocol(sslSocket);
+          if (alpnEnabled) {
+            ByteString selectedProtocol = Platform.get().getAlpnSelectedProtocol(sslSocket);
             protocol = Protocol.find(selectedProtocol);
           }
           openClientSockets.remove(raw);

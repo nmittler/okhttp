@@ -51,8 +51,8 @@ import static java.net.HttpURLConnection.HTTP_PROXY_AUTH;
  * <ul>
  *   <li>Server Name Indication (SNI) enables one IP address to negotiate secure
  *       connections for multiple domain names.
- *   <li>Next Protocol Negotiation (NPN) enables the HTTPS port (443) to be used
- *       for both HTTP and SPDY protocols.
+ *   <li>Application Layer Protocol Negotiation (ALPN) enables the HTTPS port
+ *       (443) to be used for both HTTP and SPDY protocols.
  * </ul>
  * Unfortunately, older HTTPS servers refuse to connect when such options are
  * presented. Rather than avoiding these options entirely, this class allows a
@@ -172,19 +172,19 @@ public final class Connection implements Closeable {
       platform.supportTlsIntolerantServer(sslSocket);
     }
 
-    boolean useNpn = false;
+    boolean useAlpn = false;
     if (route.modernTls) {
       boolean http2 = route.address.protocols.contains(Protocol.HTTP_2);
       boolean spdy3 = route.address.protocols.contains(Protocol.SPDY_3);
       if (http2 && spdy3) {
-        platform.setNpnProtocols(sslSocket, Protocol.HTTP2_SPDY3_AND_HTTP);
-        useNpn = true;
+        platform.setAlpnProtocols(sslSocket, Protocol.HTTP2_SPDY3_AND_HTTP);
+        useAlpn = true;
       } else if (http2) {
-        platform.setNpnProtocols(sslSocket, Protocol.HTTP2_AND_HTTP_11);
-        useNpn = true;
+        platform.setAlpnProtocols(sslSocket, Protocol.HTTP2_AND_HTTP_11);
+        useAlpn = true;
       } else if (spdy3) {
-        platform.setNpnProtocols(sslSocket, Protocol.SPDY3_AND_HTTP11);
-        useNpn = true;
+        platform.setAlpnProtocols(sslSocket, Protocol.SPDY3_AND_HTTP11);
+        useAlpn = true;
       }
     }
 
@@ -200,7 +200,7 @@ public final class Connection implements Closeable {
 
     ByteString maybeProtocol;
     Protocol selectedProtocol = Protocol.HTTP_11;
-    if (useNpn && (maybeProtocol = platform.getNpnSelectedProtocol(sslSocket)) != null) {
+    if (useAlpn && (maybeProtocol = platform.getAlpnSelectedProtocol(sslSocket)) != null) {
       selectedProtocol = Protocol.find(maybeProtocol); // Throws IOE on unknown.
     }
 

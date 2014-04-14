@@ -24,8 +24,8 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.mortbay.jetty.npn</groupId>
-      <artifactId>npn-boot</artifactId>
+      <groupId>org.mortbay.jetty.alpn</groupId>
+      <artifactId>alpn-boot</artifactId>
       <scope>provided</scope>
     </dependency>
 

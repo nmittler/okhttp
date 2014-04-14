@@ -82,7 +82,7 @@ public class Benchmark extends com.google.caliper.Benchmark {
   @Param({ "0", "20" })
   int headerCount;
 
-  /** Which ALPN/NPN protocols are in use. Only useful with TLS. */
+  /** Which ALPN protocols are in use. Only useful with TLS. */
   List<Protocol> protocols = Arrays.asList(Protocol.HTTP_11);
 
   public static void main(String[] args) {
@@ -164,8 +164,8 @@ public class Benchmark extends com.google.caliper.Benchmark {
     if (tls) {
       SSLContext sslContext = SslContextBuilder.localhost();
       server.useHttps(sslContext.getSocketFactory(), false);
-      server.setNpnEnabled(true);
-      server.setNpnProtocols(protocols);
+      server.setAlpnEnabled(true);
+      server.setAlpnProtocols(protocols);
     }
 
     final MockResponse response = newResponse();

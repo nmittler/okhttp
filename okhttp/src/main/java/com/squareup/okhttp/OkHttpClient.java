@@ -327,10 +327,8 @@ public final class OkHttpClient implements URLStreamHandlerFactory, Cloneable {
    * dropped.
    *
    * <p>If multiple protocols are specified, <a
-   * href="https://technotes.googlecode.com/git/nextprotoneg.html">NPN</a> will
-   * be used to negotiate a transport. Future releases may use another mechanism
-   * (such as <a href="http://tools.ietf.org/html/draft-friedl-tls-applayerprotoneg-02">ALPN</a>)
-   * to negotiate a transport.
+   * href="http://tools.ietf.org/html/draft-ietf-tls-applayerprotoneg">ALPN</a> will
+   * be used to negotiate a transport.
    *
    * @param protocols the protocols to use, in order of preference. The list
    *     must contain "http/1.1". It must not contain null.
@@ -477,9 +475,9 @@ public final class OkHttpClient implements URLStreamHandlerFactory, Cloneable {
   /**
    * Java and Android programs default to using a single global SSL context,
    * accessible to HTTP clients as {@link SSLSocketFactory#getDefault()}. If we
-   * used the shared SSL context, when OkHttp enables NPN for its SPDY-related
-   * stuff, it would also enable NPN for other usages, which might crash them
-   * because NPN is enabled when it isn't expected to be.
+   * used the shared SSL context, when OkHttp enables ALPN for its SPDY-related
+   * stuff, it would also enable ALPN for other usages, which might crash them
+   * because ALPN is enabled when it isn't expected to be.
    * <p>
    * This code avoids that by defaulting to an OkHttp created SSL context. The
    * significant drawback of this approach is that apps that customize the

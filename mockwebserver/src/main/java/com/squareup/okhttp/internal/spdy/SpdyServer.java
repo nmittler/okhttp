@@ -25,13 +25,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.List;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import okio.BufferedSink;
 import okio.Okio;
-import org.eclipse.jetty.npn.NextProtoNego;
+import org.eclipse.jetty.alpn.ALPN;
 
 import static com.squareup.okhttp.internal.Util.headerEntries;
 
@@ -66,15 +65,14 @@ public final class SpdyServer implements IncomingStreamHandler {
         (SSLSocket) sslSocketFactory.createSocket(socket, socket.getInetAddress().getHostAddress(),
             socket.getPort(), true);
     sslSocket.setUseClientMode(false);
-    NextProtoNego.put(sslSocket, new NextProtoNego.ServerProvider() {
+    ALPN.put(sslSocket, new ALPN.ServerProvider() {
       @Override public void unsupported() {
         System.out.println("UNSUPPORTED");
       }
-      @Override public List<String> protocols() {
-        return Arrays.asList(Protocol.SPDY_3.name.utf8());
-      }
-      @Override public void protocolSelected(String protocol) {
-        System.out.println("PROTOCOL SELECTED: " + protocol);
+
+      @Override public String select(List<String> protocols) {
+        System.err.println("CLIENT PROTOCOLS: " + protocols);
+        return Protocol.SPDY_3.name.utf8();
       }
     });
     return sslSocket;

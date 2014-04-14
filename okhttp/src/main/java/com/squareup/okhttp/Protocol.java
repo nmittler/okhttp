@@ -23,7 +23,6 @@ import okio.ByteString;
 
 /**
  * Contains protocols that OkHttp supports
- * <a href="http://tools.ietf.org/html/draft-agl-tls-nextprotoneg-04">NPN</a> or
  * <a href="http://tools.ietf.org/html/draft-ietf-tls-applayerprotoneg">ALPN</a> selection.
  *
  * <p>
@@ -45,7 +44,7 @@ public enum Protocol {
   public static final List<Protocol> HTTP2_AND_HTTP_11 =
       Util.immutableList(Arrays.asList(HTTP_2, HTTP_11));
 
-  /** Identifier string used in NPN or ALPN selection. */
+  /** Identifier string used in ALPN selection. */
   public final ByteString name;
 
   /**

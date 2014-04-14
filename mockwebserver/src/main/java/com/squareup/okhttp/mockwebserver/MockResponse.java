@@ -251,7 +251,7 @@ public final class MockResponse implements Cloneable {
   }
 
   /**
-   * When {@link MockWebServer#setNpnProtocols(java.util.List) protocols}
+   * When {@link MockWebServer#setAlpnProtocols(java.util.List) protocols}
    * include a SPDY variant, this attaches a pushed stream to this response.
    */
   public MockResponse withPush(PushPromise promise) {

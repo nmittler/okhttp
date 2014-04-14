@@ -106,7 +106,7 @@ public final class HttpResponseCacheTest {
     cache = new HttpResponseCache(cacheDir, Integer.MAX_VALUE);
     ResponseCache.setDefault(cache);
     CookieHandler.setDefault(cookieManager);
-    server.setNpnEnabled(false);
+    server.setAlpnEnabled(false);
   }
 
   @After public void tearDown() throws Exception {

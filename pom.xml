@@ -34,7 +34,7 @@
 
     <!-- Compilation -->
     <java.version>1.6</java.version>
-    <npn.version>8.1.2.v20120308</npn.version>
+    <alpn.version>7.0.0</alpn.version>
     <bouncycastle.version>1.48</bouncycastle.version>
     <gson.version>2.2.3</gson.version>
     <apache.http.version>4.2.2</apache.http.version>
@@ -67,9 +67,9 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.mortbay.jetty.npn</groupId>
-        <artifactId>npn-boot</artifactId>
-        <version>${npn.version}</version>
+        <groupId>org.mortbay.jetty.alpn</groupId>
+        <artifactId>alpn-boot</artifactId>
+        <version>${alpn.version}</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
@@ -122,7 +122,7 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.16</version>
           <configuration>
-            <argLine>-Xbootclasspath/p:${settings.localRepository}/org/mortbay/jetty/npn/npn-boot/${npn.version}/npn-boot-${npn.version}.jar</argLine>
+            <argLine>-Xbootclasspath/p:${settings.localRepository}/org/mortbay/jetty/alpn/alpn-boot/${alpn.version}/alpn-boot-${alpn.version}.jar</argLine>
           </configuration>
           <dependencies>
             <dependency>

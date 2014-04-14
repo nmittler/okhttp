@@ -109,7 +109,7 @@ public final class URLConnectionTest {
 
   @Before public void setUp() throws Exception {
     hostName = server.getHostName();
-    server.setNpnEnabled(false);
+    server.setAlpnEnabled(false);
   }
 
   @After public void tearDown() throws Exception {
@@ -1786,7 +1786,7 @@ public final class URLConnectionTest {
     if (https) {
       server.useHttps(sslContext.getSocketFactory(), false);
       server2.useHttps(sslContext.getSocketFactory(), false);
-      server2.setNpnEnabled(false);
+      server2.setAlpnEnabled(false);
       client.setSslSocketFactory(sslContext.getSocketFactory());
       client.setHostnameVerifier(new RecordingHostnameVerifier());
     }
@@ -2663,16 +2663,16 @@ public final class URLConnectionTest {
     assertTrue(call, call.contains("challenges=[Basic realm=\"protected area\"]"));
   }
 
-  @Test public void npnSetsProtocolHeader_SPDY_3() throws Exception {
-    npnSetsProtocolHeader(Protocol.SPDY_3);
+  @Test public void alpnSetsProtocolHeader_SPDY_3() throws Exception {
+    alpnSetsProtocolHeader(Protocol.SPDY_3);
   }
 
-  @Test public void npnSetsProtocolHeader_HTTP_2() throws Exception {
-    npnSetsProtocolHeader(Protocol.HTTP_2);
+  @Test public void alpnSetsProtocolHeader_HTTP_2() throws Exception {
+    alpnSetsProtocolHeader(Protocol.HTTP_2);
   }
 
-  private void npnSetsProtocolHeader(Protocol protocol) throws IOException {
-    enableNpn(protocol);
+  private void alpnSetsProtocolHeader(Protocol protocol) throws IOException {
+    enableAlpn(protocol);
     server.enqueue(new MockResponse().setBody("A"));
     server.play();
     client.setProtocols(Arrays.asList(Protocol.HTTP_11, protocol));
@@ -2688,12 +2688,12 @@ public final class URLConnectionTest {
   }
 
   @Test public void zeroLengthPost_SPDY_3() throws Exception {
-    enableNpn(Protocol.SPDY_3);
+    enableAlpn(Protocol.SPDY_3);
     zeroLengthPost();
   }
 
   @Test public void zeroLengthPost_HTTP_2() throws Exception {
-    enableNpn(Protocol.HTTP_2);
+    enableAlpn(Protocol.HTTP_2);
     zeroLengthPost();
   }
 
@@ -2703,12 +2703,12 @@ public final class URLConnectionTest {
   }
 
   @Test public void zeroLengthPut_SPDY_3() throws Exception {
-    enableNpn(Protocol.SPDY_3);
+    enableAlpn(Protocol.SPDY_3);
     zeroLengthPut();
   }
 
   @Test public void zeroLengthPut_HTTP_2() throws Exception {
-    enableNpn(Protocol.HTTP_2);
+    enableAlpn(Protocol.HTTP_2);
     zeroLengthPut();
   }
 
@@ -3015,14 +3015,14 @@ public final class URLConnectionTest {
 
   /**
    * Tests that use this will fail unless boot classpath is set. Ex. {@code
-   * -Xbootclasspath/p:/tmp/npn-boot-8.1.2.v20120308.jar}
+   * -Xbootclasspath/p:/tmp/alpn-boot-7.0.0.jar}
    */
-  private void enableNpn(Protocol protocol) {
+  private void enableAlpn(Protocol protocol) {
     client.setSslSocketFactory(sslContext.getSocketFactory());
     client.setHostnameVerifier(new RecordingHostnameVerifier());
     client.setProtocols(Arrays.asList(protocol, Protocol.HTTP_11));
     server.useHttps(sslContext.getSocketFactory(), false);
-    server.setNpnEnabled(true);
-    server.setNpnProtocols(client.getProtocols());
+    server.setAlpnEnabled(true);
+    server.setAlpnProtocols(client.getProtocols());
   }
 }

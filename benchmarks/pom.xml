@@ -39,8 +39,8 @@
       <artifactId>bcprov-jdk15on</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.mortbay.jetty.npn</groupId>
-      <artifactId>npn-boot</artifactId>
+      <groupId>org.mortbay.jetty.alpn</groupId>
+      <artifactId>alpn-boot</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -86,7 +86,7 @@
         <arguments>
           <argument>-Xms512m</argument>
           <argument>-Xmx512m</argument>
-          <commandlineArgs>-Xbootclasspath/p:${settings.localRepository}/org/mortbay/jetty/npn/npn-boot/${npn.version}/npn-boot-${npn.version}.jar</commandlineArgs>
+          <commandlineArgs>-Xbootclasspath/p:${settings.localRepository}/org/mortbay/jetty/alpn/alpn-boot/${alpn.version}/alpn-boot-${alpn.version}.jar</commandlineArgs>
           <argument>-classpath</argument>
           <classpath/>
           <argument>com.squareup.okhttp.benchmarks.Benchmark</argument>
